@@ -8,6 +8,7 @@ const dotenv = require('dotenv');
 
 dotenv.config(); // dotenv는 require 한다음, 최대한 위에 적어주는 것이 좋다.
 const pageRouter = require('./routes/page');
+const authRouter = require('./routes/auth');
 
 const app = express();
 app.set('port', process.env.PORT || 8001);
@@ -32,7 +33,9 @@ app.use(session({
   },
 }));
 
+// 라우터 연결
 app.use('/', pageRouter);
+app.use('/auth', authRouter);
 
 // 404 처리 미들웨어
 app.use((req, res, next) => {
