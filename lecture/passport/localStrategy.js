@@ -6,13 +6,13 @@ const User = require('../models/user');
 
 module.exports = () => {
   passport.use(new LocalStrategy({
-    usernameField: 'email',
-    passwordField: 'password',
+    usernameField: 'email', // req.body.email
+    passwordField: 'password', // req.body.password
   }, async (email, password, done) => {
-    try {
-      const exUser = await User.findOne({ where: { email } });
+    try { 
+      const exUser = await User.findOne({ where: { email } }); // 이메일을 비교
       if (exUser) {
-        const result = await bcrypt.compare(password, exUser.password);
+        const result = await bcrypt.compare(password, exUser.password); // 입력된 비밀번호와 해쉬 암호화된 비밀번호를 비교
         if (result) {
           done(null, exUser);
         } else {
