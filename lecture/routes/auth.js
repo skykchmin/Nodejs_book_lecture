@@ -53,4 +53,12 @@ router.get('/logout', isLoggedIn, (req, res) => {
     res.redirect('/');
 });
 
+router.get('/kakao', passport.authenticate('kakao')); // 카카오톡 버튼을 누르면 이곳에 멈추게 된다.
+
+router.get('/kakao/callback', passport.authenticate('kakao', {
+  failureRedirect: '/',
+}), (req, res) => {
+  res.redirect('/');
+});
+
 module.exports = router;
