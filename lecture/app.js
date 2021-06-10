@@ -9,6 +9,8 @@ const dotenv = require('dotenv');
 dotenv.config(); // dotenv는 require 한다음, 최대한 위에 적어주는 것이 좋다.
 const pageRouter = require('./routes/page');
 const authRouter = require('./routes/auth');
+const postRouter = require('./routes/post');
+
 
 const app = express();
 app.set('port', process.env.PORT || 8001);
@@ -19,7 +21,10 @@ nunjucks.configure('views', {
 });
 
 app.use(morgan('dev'));
+
+// static: 요청과 실제 파일 주소가 다를 때 역할을 해주는 것
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('img', express.static(path.join(__dirname, 'uploads'))); // 사람들은 이미지 를 요청하지만 실제 폴더에는 images를 요청
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
@@ -36,6 +41,7 @@ app.use(session({
 // 라우터 연결
 app.use('/', pageRouter);
 app.use('/auth', authRouter);
+app.use('/post', postRouter);
 
 // 404 처리 미들웨어
 app.use((req, res, next) => {
